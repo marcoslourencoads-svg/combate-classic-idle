@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Novo combate | Ragnarok Classic Idle</title>
+<meta name="description" content="O novo combate do Ragnarok Classic Idle: o tempo de up de cada classe no rAthena original, como estava e como ficou.">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<style>
+  @font-face { font-family: 'Figtree'; src: url('assets/fonts/figtree-latin.woff2') format('woff2'); font-weight: 300 900; font-display: swap; }
+  @font-face { font-family: 'Marcellus'; src: url('assets/fonts/marcellus-latin.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  :root {
+    --bg: #050d18; --bg2: #071425; --panel: #09182a; --panel2: #0d2138;
+    --line: #274b70; --line-soft: rgba(65,112,154,.48);
+    --text: #f4f7fb; --muted: #9db1c6; --muted2: #7d94aa;
+    --ice: #7dd3ff; --gold: #d4af37; --gold-hi: #f1ce73; --gold-deep: #8f6418; --red: #ed5364;
+    --serif: 'Marcellus', Georgia, serif; --sans: 'Figtree', Inter, system-ui, sans-serif;
+    --radius: 10px; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; }
+  body {
+    background:
+      radial-gradient(900px 500px at 12% -10%, rgba(212,175,55,.12), transparent 62%),
+      radial-gradient(900px 520px at 100% 0%, rgba(47,120,255,.12), transparent 60%),
+      linear-gradient(180deg, var(--bg2), var(--bg) 40%);
+    min-height: 100vh;
+  }
+  .pagina { max-width: 1040px; margin: 0 auto; padding: 32px max(16px, env(safe-area-inset-left)) 64px max(16px, env(safe-area-inset-right)); display: flex; flex-direction: column; gap: 28px; }
+  .topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .topo img { height: 52px; width: auto; }
+  .topo a.voltar { color: var(--muted); text-decoration: none; font-size: 14px; border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; }
+  .topo a.voltar:hover { color: var(--gold-hi); border-color: var(--gold-deep); }
+  .hero { display: flex; flex-direction: column; gap: 12px; }
+  .selo { align-self: flex-start; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-hi); border: 1px solid var(--gold-deep); border-radius: 999px; padding: 5px 12px; background: rgba(212,175,55,.08); }
+  h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 5vw, 46px); line-height: 1.1; margin: 0; color: var(--gold-hi); text-wrap: balance; }
+  h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 3.2vw, 28px); margin: 0; color: var(--gold-hi); }
+  .lead { font-size: 18px; line-height: 1.55; color: var(--text); max-width: 68ch; margin: 0; }
+  .moldura { background: linear-gradient(180deg, rgba(13,33,56,.92), rgba(9,24,42,.92)); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: 0 18px 48px rgba(0,0,0,.36), inset 0 1px rgba(255,255,255,.03); display: flex; flex-direction: column; gap: 16px; position: relative; }
+  .moldura::before, .moldura::after { content: ""; position: absolute; width: 18px; height: 18px; border: 2px solid var(--gold); }
+  .moldura::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; border-top-left-radius: var(--radius); }
+  .moldura::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; border-bottom-right-radius: var(--radius); }
+  .sub { color: var(--muted); margin: 0; line-height: 1.5; max-width: 70ch; }
+  .legenda { display: flex; flex-wrap: wrap; gap: 18px; font-size: 14px; color: var(--muted); }
+  .legenda span { display: inline-flex; align-items: center; gap: 8px; }
+  .bola { width: 14px; height: 14px; border-radius: 50%; display: inline-block; flex: none; }
+  .b-orig { background: #6b7c8f; }
+  .b-antes { background: var(--ice); }
+  .b-novo { background: var(--gold); box-shadow: 0 0 10px rgba(212,175,55,.7); }
+  .abas { display: flex; gap: 8px; flex-wrap: wrap; }
+  .abas button { font: inherit; font-size: 15px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+  .abas button[aria-selected="true"] { color: #1a1206; background: linear-gradient(180deg, var(--gold-hi), var(--gold)); border-color: var(--gold); font-weight: 700; }
+  .abas button:focus-visible { outline: 2px solid var(--ice); outline-offset: 2px; }
+  .eixo { display: grid; grid-template-columns: 170px 1fr; gap: 12px; font-size: 13px; color: var(--muted2); }
+  .eixo .esc { display: flex; justify-content: space-between; }
+  .linhas { display: flex; flex-direction: column; }
+  .linha { display: grid; grid-template-columns: 170px 1fr; gap: 12px; align-items: center; padding: 7px 0; border-top: 1px solid rgba(39,75,112,.45); }
+  .nome { display: flex; align-items: center; gap: 8px; min-width: 0; font-size: 15px; }
+  .nome img { width: 24px; height: 24px; image-rendering: pixelated; flex: none; }
+  .nome .sem-icone { width: 24px; height: 24px; flex: none; border-radius: 6px; background: var(--panel2); border: 1px solid var(--line); }
+  .nome span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .trilho { position: relative; height: 26px; }
+  .trilho::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: rgba(39,75,112,.6); transform: translateY(-50%); border-radius: 2px; }
+  .faixa { position: absolute; top: 50%; height: 4px; transform: translateY(-50%); background: linear-gradient(90deg, rgba(212,175,55,.6), rgba(107,124,143,.35)); border-radius: 3px; }
+  .trilho .bola { position: absolute; top: 50%; transform: translate(-50%, -50%); cursor: default; }
+  .trilho .b-novo { width: 16px; height: 16px; z-index: 3; }
+  .trilho .b-antes { z-index: 2; }
+  .nao-chega { position: absolute; right: 0; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--red); white-space: nowrap; background: var(--panel); padding-left: 6px; }
+  .dica { position: fixed; pointer-events: none; z-index: 10; background: #0b1c31; border: 1px solid var(--gold-deep); color: var(--text); font-size: 13px; border-radius: 8px; padding: 6px 10px; box-shadow: 0 8px 24px rgba(0,0,0,.4); white-space: nowrap; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .card h3 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: 18px; color: var(--gold-hi); display: flex; align-items: center; gap: 8px; }
+  .card h3 img { width: 24px; height: 24px; image-rendering: pixelated; }
+  .card p { margin: 0; color: var(--text); line-height: 1.5; font-size: 15px; }
+  .card .tag { font-size: 12px; color: var(--muted2); letter-spacing: .06em; text-transform: uppercase; }
+  .geral { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .geral div { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+  .geral b { display: block; font-family: var(--serif); font-weight: 400; color: var(--gold-hi); font-size: 18px; margin-bottom: 4px; }
+  .geral p { margin: 0; color: var(--muted); line-height: 1.45; font-size: 14px; }
+  .rodape { color: var(--muted2); font-size: 13px; line-height: 1.5; text-align: center; }
+  @media (max-width: 560px) {
+    .eixo, .linha { grid-template-columns: 112px 1fr; }
+    .nome { font-size: 13px; }
+    .nome img, .nome .sem-icone { width: 20px; height: 20px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .trilho .bola { transition: left .5s ease; }
+  }
+</style>
+</head>
+<body>
+<div class="pagina">
+  <header class="topo">
+    <a href="https://roclassicidle.com.br/"><img src="assets/img/logo-640.webp" alt="Ragnarok Classic Idle"></a>
+    <a class="voltar" href="https://roclassicidle.com.br/">Jogar agora</a>
+  </header>
+
+  <section class="hero">
+    <span class="selo">Atualização de combate</span>
+    <h1>Upar ficou mais justo para todas as classes</h1>
+    <p class="lead">Comparamos o tempo que um jogador comum leva para chegar ao nível 99 no servidor clássico original e no Ragnarok Classic Idle com o novo combate. Quanto mais à esquerda a bolinha, mais rápido a classe sobe.</p>
+  </section>
+
+  <section class="moldura" id="comparativo">
+    <h2>Tempo até o 99, classe por classe</h2>
+    <div class="legenda">
+      <span><i class="bola b-orig"></i>Original (rAthena)</span>
+      <span><i class="bola b-novo"></i>Ragnarok Classic Idle</span>
+    </div>
+    <div class="abas" role="tablist">
+      <button role="tab" id="aba-normal" aria-selected="true" data-grupo="normal">Classes (1 ao 99)</button>
+      <button role="tab" id="aba-trans" aria-selected="false" data-grupo="trans">Transclasses (renascimento ao 99)</button>
+    </div>
+    <div class="eixo" aria-hidden="true"><span></span><div class="esc"><span>⟵ mais rápido</span><span>mais lento ⟶</span></div></div>
+    <div class="linhas" id="linhas"></div>
+    <p class="sub">No servidor original, o mesmo jogador leva dezenas de vezes mais tempo, e algumas classes morrem no caminho e nem chegam ao 99. Escala comprimida para caber tudo na tela.</p>
+  </section>
+
+  <section class="moldura" id="classes">
+    <h2>O que mudou em cada classe</h2>
+    <p class="sub">Comparado com as habilidades do servidor clássico original. Nenhum jogador perde o que já tinha: os ajustes para baixo só desfizeram testes que nunca foram para o jogo.</p>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="moldura" id="todos">
+    <h2>Vale para todo mundo</h2>
+    <div class="geral">
+      <div><b>Grupo compensa</b><p>Caçar em grupo agora sempre rende mais EXP que caçar sozinho, em qualquer nível. Quanto maior o grupo, maior o bônus.</p></div>
+      <div><b>MVP</b><p>A Sala e a Praça de MVP foram feitas para uma build média vencer sozinha. O MVP do mapa é para grupo de 4.</p></div>
+      <div><b>Bot sem configurar</b><p>Quem nunca abriu o menu do Bot agora caça usando as habilidades da classe.</p></div>
+      <div><b>Zeny</b><p>Caçando no mapa certo, toda classe fecha no positivo, sem contar Poção Branca.</p></div>
+    </div>
+  </section>
+
+  <p class="rodape">Medido com um jogador comum de cada classe: atributos e habilidades do nível, equipamento do Éden e o Bot padrão.</p>
+</div>
+<div class="dica" id="dica" hidden></div>
+
+<script src="dados.js"></script>
+<script>
+(function () {
+  var MIN = Math.log10(150), MAX = Math.log10(3e7);
+  function pos(h) { return Math.max(0, Math.min(100, (Math.log10(h) - MIN) / (MAX - MIN) * 100)); }
+  var linhas = document.getElementById('linhas');
+  var dica = document.getElementById('dica');
+  function mostrar(ev, txt) { dica.textContent = txt; dica.hidden = false; dica.style.left = Math.min(ev.clientX + 12, window.innerWidth - dica.offsetWidth - 8) + 'px'; dica.style.top = (ev.clientY - 36) + 'px'; }
+  function esconder() { dica.hidden = true; }
+  function icone(c) {
+    if (c.icone === null) { var s = document.createElement('i'); s.className = 'sem-icone'; return s; }
+    var img = document.createElement('img'); img.src = 'assets/img/classes/icons/' + c.icone + '.png'; img.alt = ''; img.loading = 'lazy'; return img;
+  }
+  function bola(cls, left, txt) {
+    var b = document.createElement('i'); b.className = 'bola ' + cls; b.style.left = left + '%';
+    b.addEventListener('pointermove', function (ev) { mostrar(ev, txt); });
+    b.addEventListener('pointerleave', esconder);
+    return b;
+  }
+  function desenhar(grupo) {
+    linhas.replaceChildren();
+    var lista = window.CLASSES.filter(function (c) { return grupo === 'trans' ? c.trans : !c.trans; })
+      .sort(function (a, b) { return a.novo - b.novo; });
+    lista.forEach(function (c) {
+      var l = document.createElement('div'); l.className = 'linha';
+      var n = document.createElement('div'); n.className = 'nome'; n.appendChild(icone(c));
+      var t = document.createElement('span'); t.textContent = c.nome; n.appendChild(t);
+      var tr = document.createElement('div'); tr.className = 'trilho';
+      var fim = c.original === null ? 100 : pos(c.original);
+      var f = document.createElement('div'); f.className = 'faixa'; f.style.left = pos(c.novo) + '%'; f.style.width = Math.max(0, fim - pos(c.novo)) + '%'; tr.appendChild(f);
+      if (c.original === null) { var nc = document.createElement('span'); nc.className = 'nao-chega'; nc.textContent = 'no original não chega ao 99'; tr.appendChild(nc); }
+      else tr.appendChild(bola('b-orig', pos(c.original), c.nome + ' · original: ' + Math.round(c.original / c.novo) + 'x mais lento que no Classic Idle'));
+      tr.appendChild(bola('b-novo', pos(c.novo), c.nome + ' · Ragnarok Classic Idle'));
+      l.appendChild(n); l.appendChild(tr); linhas.appendChild(l);
+    });
+  }
+  document.querySelectorAll('.abas button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.abas button').forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); });
+      desenhar(b.dataset.grupo);
+    });
+  });
+  desenhar('normal');
+  var cards = document.getElementById('cards');
+  window.CLASSES.slice().sort(function (a, b) { return (a.trans - b.trans) || a.nome.localeCompare(b.nome, 'pt-BR'); }).forEach(function (c) {
+    var k = document.createElement('article'); k.className = 'card';
+    var h = document.createElement('h3'); if (c.icone !== null) h.appendChild(icone(c)); h.appendChild(document.createTextNode(c.nome));
+    var tg = document.createElement('span'); tg.className = 'tag'; tg.textContent = c.trans ? 'Transclasse' : 'Classe';
+    var p = document.createElement('p'); p.textContent = c.mudou;
+    k.appendChild(h); k.appendChild(tg); k.appendChild(p); cards.appendChild(k);
+  });
+})();
+</script>
+</body>
+</html>
